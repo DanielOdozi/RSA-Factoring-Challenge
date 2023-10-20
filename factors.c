@@ -1,58 +1,48 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "main.h"
 
-void factorize_large_number(const char* number_str) {
-    unsigned long long n = strtoull(number_str, NULL, 10);
+int factorize_large_number(const char* number_str)
+{
 
-    if (n <= 1) {
-        printf("Error: Input number must be greater than 1\n");
-        return;
-    }
+	uint32_t num;
+	uint32_t i;
 
-    printf("%llu =", n);
+	num = atoi(number_str);
 
-    unsigned long long div = 2;
-    int first = 1;
 
-    while (n > 1) {
-        if (n % div == 0) {
-            if (!first) {
-                printf("\n");
-            }
-            printf(" %llu", div);
-            n /= div;
-            if (n != 1) {
-                printf("*");
-                printf(" %llu", n);
-            }
-            break;
-        } else {
-            div++;
-        }
-    }
-    printf("\n");
+	for (i = 2; i < num; i++)
+	{
+		if (num % i == 0)
+		{
+			printf("%d=%d*%d\n",num,num/i,i);
+			break;
+		}
+	}
+
+return (0);
 }
 
-int main(int argc, char *argv[]) {
-    if (argc != 2) {
-        fprintf(stderr, "Usage: %s <file>\n", argv[0]);
-        return 1;
-    }
+int main(int argc, char *argv[])
+{
+	FILE *fptr;
+	size_t count;
+	ssize_t line;
+	char *buffer = NULL;
 
-    FILE *file = fopen(argv[1], "r");
-    if (!file) {
-        fprintf(stderr, "Error: Could not open the file\n");
-        return 1;
-    }
 
-    char line[256];
-
-    while (fgets(line, sizeof(line), file)) {
-        line[strcspn(line, "\n")] = 0;  // Remove newline character
-        factorize_large_number(line);
-    }
-
-    fclose(file);
-    return 0;
+	if (argc != 2)
+	{
+		fprintf(stderr, "Usage: factor <filename>\n");
+		exit(EXIT_FAILURE);
+	}
+	fptr = fopen(argv[1], "r");
+	if (fptr == NULL)
+	{
+		fprintf(stderr, "Error: can't open file %s\n", argv[1]);
+		exit(EXIT_FAILURE);
+	}
+	while((line = getline(&buffer, &count, fptr)) != -1)
+	{
+		factorize_large_number(buffer);
+	}
+return (0);
 }
