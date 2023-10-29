@@ -1,26 +1,11 @@
-#include "main.h"
+#include "factor.h"
 
-int factorize_large_number(const char* number_str)
-{
-
-	uint32_t num;
-	uint32_t i;
-
-	num = atoi(number_str);
-
-
-	for (i = 2; i < num; i++)
-	{
-		if (num % i == 0)
-		{
-			printf("%d=%d*%d\n",num,num/i,i);
-			break;
-		}
-	}
-
-return (0);
-}
-
+/**
+ * main - main function
+ *
+ * Author: Thaoban Abdrasheed
+ * Return: void
+ */
 int main(int argc, char *argv[])
 {
 	FILE *fptr;
@@ -42,7 +27,7 @@ int main(int argc, char *argv[])
 	}
 	while((line = getline(&buffer, &count, fptr)) != -1)
 	{
-		factorize_large_number(buffer);
+		factorize(buffer);
 	}
 return (0);
 }
